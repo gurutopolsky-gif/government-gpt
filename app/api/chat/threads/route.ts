@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     const [thread] = await db
       .insert(chatThreads)
       .values({
-        pehchanId,
+        userId: pehchanId,
         title,
         messages
       })
