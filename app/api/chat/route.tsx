@@ -1,6 +1,5 @@
 import { openai } from "@ai-sdk/openai";
-import { generateText } from "ai";
-import { NextResponse } from "next/server";
+import { streamText } from "ai";
 
 export const maxDuration = 30;
 
@@ -13,12 +12,18 @@ export async function POST(req: Request) {
     const lastMessage = messages[messages.length - 1];
 
     if (GREETING_REGEX.test((lastMessage?.content || "").trim())) {
-      return NextResponse.json({
-        message: "Hi, how can I assist you?",
+      const result = streamText({
+        model: openai("gpt-4o-mini"),
+        temperature: 0,
+        system:
+          "Reply with exactly this single sentence and nothing else: Hi, how can I assist you?",
+        messages: [{ role: "user", content: lastMessage.content }],
       });
+
+      return result.toDataStreamResponse();
     }
 
-    const { text } = await generateText({
+    const result = streamText({
       model: openai("gpt-4o-mini"),
       messages,
       system:
@@ -26,12 +31,9 @@ export async function POST(req: Request) {
       temperature: 0.3,
     });
 
-    return NextResponse.json({ message: text });
+    return result.toDataStreamResponse();
   } catch (error) {
     console.error("Chat route error:", error);
-    return NextResponse.json(
-      { error: "Failed to generate response" },
-      { status: 500 }
-    );
+    return new Response("Failed to generate response", { status: 500 });
   }
 }
