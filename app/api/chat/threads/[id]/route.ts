@@ -21,7 +21,7 @@ export async function GET(
       .where(
         and(
           eq(chatThreads.id, parseInt(params.id)),
-          eq(chatThreads.pehchanId, pehchanId)
+          eq(chatThreads.userId, pehchanId)
         )
       )
 
@@ -52,7 +52,7 @@ export async function PATCH(
       .where(
         and(
           eq(chatThreads.id, parseInt(params.id)),
-          eq(chatThreads.pehchanId, pehchanId)
+          eq(chatThreads.userId, pehchanId)
         )
       )
       .returning()
@@ -79,7 +79,7 @@ export async function DELETE(
       .where(
         and(
           eq(chatThreads.id, parseInt(params.id)),
-          eq(chatThreads.pehchanId, pehchanId)
+          eq(chatThreads.userId, pehchanId)
         )
       )
       .returning()
