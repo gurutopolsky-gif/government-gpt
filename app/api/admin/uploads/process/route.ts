@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { verifySignatureAppRouter } from '@upstash/qstash/nextjs';
 import { db } from '@/lib/db';
 import { documentUploads } from '@/lib/db/schema/document-uploads';
 import { eq } from 'drizzle-orm';
@@ -115,4 +114,4 @@ async function handler(req: Request) {
   }
 }
 
-export const POST = verifySignatureAppRouter(handler);
+export const POST = handler;
