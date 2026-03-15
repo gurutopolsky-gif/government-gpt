@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     const threads = await db
       .select()
       .from(chatThreads)
-      .where(eq(chatThreads.pehchanId, pehchanId))
+      .where(eq(chatThreads.userId, pehchanId))
       .orderBy(chatThreads.updatedAt)
 
     return NextResponse.json(threads)
